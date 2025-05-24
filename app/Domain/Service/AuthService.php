@@ -44,6 +44,23 @@ class AuthService
         // TODO: implement this for authenticating the user
         // TODO: make sur ethe user exists and the password matches
         // TODO: don't forget to store in session user data needed afterwards
+        $user = $this->users->findByUsername($username);
+
+        if ($user === null) {
+            throw new \RuntimeException('Invalid Username.');
+        }
+
+        if (!password_verify($password, $user->passwordHash)) {
+            throw new \RuntimeException('Invalid Password.');
+        }
+
+        // If the login session was successfull, then store the information 
+        if (session_status() !== PHP_SESSION_ACTIVE) {
+            session_start();
+        }
+
+        $_SESSION['user_id'] = $user->id;
+        $_SESSION['username'] = $user->username;
 
         return true;
     }

@@ -75,9 +75,9 @@ class AuthController extends BaseController
             return $this->render($response, 'auth/register.twig', [
                 'errors' => $errors,
                 'existingInput' => ['username' => $username]
-        ]);
+         ]);
+        }
     }
-}
 
     public function showLogin(Request $request, Response $response): Response
     {
@@ -87,13 +87,52 @@ class AuthController extends BaseController
     public function login(Request $request, Response $response): Response
     {
         // TODO: call corresponding service to perform user login, handle login failures
+            $inputData = (array)$request->getParsedBody();
 
-        return $response->withHeader('Location', '/')->withStatus(302);
+            $username = trim($inputData['username'] ?? ''); 
+            $password = $inputData['password'] ?? '';
+
+            $errors = []; // This array is set up to collect errors
+
+            if ($username === '') {
+                $errors['username'] = 'You must input a username.';
+            }
+            if ($password === '') {
+                $errors['password'] = 'You must input a password.';
+            }
+
+            if (!empty($errors)) {
+            return $this->render($response, 'auth/login.twig', [
+                'errors' => $errors,
+                'existingInput' => ['username' => $username]
+            ]);
+        }
+
+        try {
+            $this->authService->attempt($username, $password); // Calling the attempt method to authenticate the user
+
+            return $response->withHeader('Location', '/register')->withStatus(302); // LOCATION AFTER LOGIN !!!!!!!
+
+        // When an error is thrown, this catches it and re-renders the page 
+        } catch (\RuntimeException $ex) {
+            $errors['message'] = $ex->getMessage();
+
+            return $this->render($response, 'auth/login.twig', [
+                'errors' => $errors,
+                'existingInput' => ['username' => $username]
+        ]);
+        }   
     }
 
     public function logout(Request $request, Response $response): Response
     {
         // TODO: handle logout by clearing session data and destroying session
+        if (session_status() === PHP_SESSION_ACTIVE) {
+            session_start();
+        }
+        session_regenerate_id(true);
+        $_SESSION = [];
+        session_destroy();
 
         return $response->withHeader('Location', '/login')->withStatus(302);
     }
