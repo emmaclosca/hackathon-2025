@@ -17,9 +17,23 @@ class AuthService
     {
         // TODO: check that a user with same username does not exist, create new user and persist
         // TODO: make sure password is not stored in plain, and proper PHP functions are used for that
+        $usernameTaken = $this->users->findByUsername($username);
+        if ($usernameTaken !== null) {
+            throw new \RuntimeException('This username has been taken, try a different username.');
+        }
+
+        if (strlen($username) < 4) {
+            throw new \RuntimeException('The length of your username must be at least 4 character.');
+        }
+
+        if (strlen($password) < 8 || !preg_match("/\d/", $password)){
+            throw new \RuntimeException('Your password must have at least 8 characters and a number.');
+        }
+
+        $passwordHash = password_hash($password, PASSWORD_DEFAULT);
 
         // TODO: here is a sample code to start with
-        $user = new User(null, $username, $password, new \DateTimeImmutable());
+        $user = new User(null, $username, $passwordHash, new \DateTimeImmutable());
         $this->users->save($user);
 
         return $user;

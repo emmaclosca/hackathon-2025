@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App;
 
+use Dotenv\Dotenv;
+
 use App\Domain\Repository\ExpenseRepositoryInterface;
 use App\Domain\Repository\UserRepositoryInterface;
 use App\Infrastructure\Persistence\PdoExpenseRepository;
@@ -26,6 +28,10 @@ class Kernel
 {
     public static function createApp(): App
     {
+        // Load environment variables from your .env file
+        $dotenv = Dotenv::createImmutable(__DIR__ . '/../');
+        $dotenv->load();
+
         // Configure the DI container builder and build the DI container
         $builder = new ContainerBuilder();
         $builder->useAutowiring(true);  // Enable autowiring explicitly
@@ -45,14 +51,17 @@ class Kernel
             },
 
             // Define a factory for PDO database connection
-            PDO::class                        => factory(function () {
+           PDO::class => factory(function () {
                 static $pdo = null;
                 if ($pdo === null) {
-                    $pdo = new PDO('sqlite:'.$_ENV['DB_PATH']);
+                    $dbFile = realpath(__DIR__ . '/../' . $_ENV['DB_PATH']);
+                    if ($dbFile === false) {
+                        throw new \RuntimeException("Database file not found at path: " . $_ENV['DB_PATH']);
+                    }
+                    $pdo = new PDO('sqlite:' . $dbFile);
                     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                     $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
                 }
-
                 return $pdo;
             }),
 

@@ -2,10 +2,16 @@
 {% block title %}Register{% endblock %}
 {% block content %}
     <h1 class="text-2xl font-bold mb-4">Register</h1>
+    {# Added an error display #}
+    {% if errors.message is defined %}
+        <div class="mb-4 text-red-500" text-center>
+            {{ errors.message }}
+        </div>
+    {% endif %}
     <form action="/register" method="POST" class="max-w-sm mx-auto">
         <div class="mb-4">
             <label for="username" class="block text-gray-400 text-sm font-bold mb-2">Username</label>
-            <input type="text" id="username" name="username" required value="{{ username|default('') }}"
+            <input type="text" id="username" name="username" required value="{{ existingInput.username|default('') }}"
                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-400 leading-tight focus:outline-none focus:shadow-outline">
             {% if errors['username'] is defined %}
                 <span class="text-red-500">{{ errors['username'] }}</span>
@@ -13,10 +19,18 @@
         </div>
         <div class="mb-6">
             <label for="password" class="block text-gray-400 text-sm font-bold mb-2">Password</label>
-            <input type="password" id="password" name="password" required value="{{ password|default('') }}"
+            <input type="password" id="password" name="password" required 
                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-400 leading-tight focus:outline-none focus:shadow-outline">
             {% if errors['password'] is defined %}
                 <span class="text-red-500">{{ errors['password'] }}</span>
+            {% endif %}
+        </div>
+        <div class="mb-6">
+            <label for="confirmPassword" class="block text-gray-400 text-sm font-bold mb-2">Confirm Password</label>
+            <input type="password" id="confirmPassword" name="confirmPassword" required 
+                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-400 leading-tight focus:outline-none focus:shadow-outline">
+            {% if errors['confirmPassword'] is defined %}
+                <span class="text-red-500">{{ errors['confirmPassword'] }}</span>
             {% endif %}
         </div>
         <button type="submit"

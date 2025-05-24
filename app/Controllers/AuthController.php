@@ -31,9 +31,53 @@ class AuthController extends BaseController
     public function register(Request $request, Response $response): Response
     {
         // TODO: call corresponding service to perform user registration
+        // Taking the input from the user and storing it into an array so we can access it
+        $inputData = (array)$request->getParsedBody();
 
-        return $response->withHeader('Location', '/login')->withStatus(302);
+        // Here we are providing a value thats default if field is missing with ?? "",
+        // While fetching the information 
+        $username = trim($inputData['username'] ?? ''); 
+        $password = $inputData['password'] ?? '';
+        $confirmPassword = $inputData['confirmPassword'] ?? '';
+
+        $errors = []; // This array is set up to collect errors
+
+        if ($username === '') {
+            $errors['username'] = 'You must input a username.';
+        }
+        if ($password === '') {
+            $errors['password'] = 'You must input a password.';
+        }
+        if ($confirmPassword === '') {
+            $errors['confirmPassword'] = 'You must input your password again.';
+        }
+        if ($password !== '' && $confirmPassword !== '' && $password !== $confirmPassword) {
+            $errors['confirmPassword'] = 'The passwords you inputted do not match.';
+        }
+
+        // This if statement saves the username to avoid the user typing it again and re-renders to show the errors
+        if (!empty($errors)) {
+            return $this->render($response, 'auth/register.twig', [
+                'errors' => $errors,
+                'existingInput' => ['username' => $username]
+            ]);
+        }
+
+        try {
+            $this->authService->register($username, $password); // Calling the register method to validate the requirements and save the user
+
+            return $response->withHeader('Location', '/login')->withStatus(302);
+
+        // When an error is thrown, this catches it and re-renders the page 
+        } catch (\RuntimeException $ex) {
+            $errors['message'] = $ex->getMessage();
+
+            return $this->render($response, 'auth/register.twig', [
+                'errors' => $errors,
+                'existingInput' => ['username' => $username]
+        ]);
     }
+}
 
     public function showLogin(Request $request, Response $response): Response
     {
