@@ -128,7 +128,8 @@ Features fully implemented:
   
 - CRUD (LIST)
   List monthly expenses for the logged in user, sorted and paginated. 
-  The default year-month for the listing is the current one. Regarding the previous years, they are shown in the select input only if the user had expenses during that year. Current year    is always an option. The user is allowed to select a new year-month and press a button to reload the expenses list.
+  The default year-month for the listing is the current one. Regarding the previous years, they are shown in the select input only if the user had expenses during that year.
+  Current year is always an option. The user is allowed to select a new year-month and press a button to reload the expenses list.
   Expenses are sorted descending by date.
   Clicking on the “Add” button at the top navigates to the Expenses – Add route.
   Columns: description, amount (formatted € with 2 decimals), category, “Edit” link, “Delete” link.
