@@ -30,6 +30,11 @@ class ExpenseService
         return $this->expenses->findBy($criteria,$offsetCalculation, $pageSize); // Returns a paginated list of expenses
     }
 
+    public function count(array $criteria): int
+    {
+        return $this->expenses->countBy($criteria);
+    }
+    
     public function create(
         User $user,
         float $amount,
@@ -50,8 +55,10 @@ class ExpenseService
             throw new \InvalidArgumentException('The category of the expense is required.');
         }
 
+        $amountCents = (int) round($amount * 100);
+
         // TODO: here is a code sample to start with
-        $expense = new Expense(null, $user->id, $date, $category, $amount, $description);
+        $expense = new Expense(null, $user->id, $date, $category, $amountCents, $description);
         $this->expenses->save($expense);
     }
 
@@ -75,7 +82,7 @@ class ExpenseService
             throw new \InvalidArgumentException('The category of the expense is required.');
         }
 
-        $expense->setAmount($amount);
+        $expense->amountCents = (int) round($amount * 100);
         $expense->setDescription($description);
         $expense->setDate($date);
         $expense->setCategory($category);
@@ -89,5 +96,21 @@ class ExpenseService
         // TODO: for extra points wrap the whole import in a transaction and rollback only in case writing to DB fails
 
         return 0; // number of imported rows
+    }
+
+    public function getAvailableYears(User $user): array
+    {
+        // Delegate to repository to fetch distinct years for this user's expenses
+        return $this->expenses->findDistinctYearsByUserId($user->id);
+    }
+
+    public function find(int $id): ?Expense
+    {
+        return $this->expenses->find($id);
+    }
+
+    public function delete(int $id): void
+    {
+        $this->expenses->delete($id);
     }
 }
