@@ -103,7 +103,7 @@ class AuthController extends BaseController
         try {
             $this->authService->attempt($username, $password); 
 
-            return $response->withHeader('Location', '/expenses')->withStatus(302); 
+            return $response->withHeader('Location', '/')->withStatus(302); 
 
         } catch (\RuntimeException $ex) {
             $errors['message'] = $ex->getMessage();
