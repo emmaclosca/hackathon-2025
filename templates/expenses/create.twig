@@ -8,15 +8,12 @@
     {% if error %}
         <div class="bg-red-500 text-white p-3 mb-4 rounded">{{ error }}</div>
     {% endif %}
-
     <form action="/expenses" method="POST" class="max-w-sm mx-auto">
         <div class="mb-4 flex items-center">
             <label for="date" class="w-24 text-gray-300 font-bold">Date:</label>
             <input type="date" id="date" name="date" required
                    value="{{ old.date ?? '' }}"
-                   class="flex-1 shadow appearance-none border rounded py-2 px-3 bg-gray-700 text-gray-100 leading-tight focus:outline-none focus:shadow-outline">
-        </div>
-
+                   class="flex-1 shadow appearance-none border rounded py-2 px-3 bg-gray-700 text-gray-100 leading-tight focus:outline-none focus:shadow-outline"></div>
         <div class="mb-4 flex items-center">
             <label for="category" class="w-24 text-gray-300 font-bold">Category:</label>
             <select id="category" name="category" required
@@ -27,20 +24,15 @@
                 {% endfor %}
             </select>
         </div>
-
         <div class="mb-4 flex items-center">
             <label for="amount" class="w-24 text-gray-300 font-bold">Amount:</label>
             <input type="number" id="amount" name="amount" step="0.01" required
                    value="{{ old.amount ?? '' }}"
-                   class="flex-1 shadow appearance-none border rounded py-2 px-3 bg-gray-700 text-gray-100 leading-tight focus:outline-none focus:shadow-outline">
-        </div>
-
+                   class="flex-1 shadow appearance-none border rounded py-2 px-3 bg-gray-700 text-gray-100 leading-tight focus:outline-none focus:shadow-outline"></div>
         <div class="mb-6 flex items-start">
             <label for="description" class="w-24 text-gray-300 font-bold mt-2">Description:</label>
             <textarea id="description" name="description" rows="2"
-                      class="flex-1 shadow appearance-none border rounded py-2 px-3 bg-gray-700 text-gray-100 leading-tight focus:outline-none focus:shadow-outline">{{ old.description ?? '' }}</textarea>
-        </div>
-
+                      class="flex-1 shadow appearance-none border rounded py-2 px-3 bg-gray-700 text-gray-100 leading-tight focus:outline-none focus:shadow-outline">{{ old.description ?? '' }}</textarea></div>
         <div class="flex justify-end">
             <button type="submit"
                     class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">

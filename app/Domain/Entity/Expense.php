@@ -17,6 +17,26 @@ final class Expense
         public string $description,
     ) {}
 
+    public function setDescription(string $description): void
+    {
+        $this->description = $description;
+    }
+
+    public function setDate(string $date): void
+    {
+        $this->date = $date;
+    }
+
+    public function setCategory(string $category): void
+    {
+        $this->category = $category;
+    }
+
+    public function setAmountCents(string $amountcents): void
+    {
+        $this->amountCents = $amountCents;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

@@ -116,7 +116,10 @@ class ExpenseController extends BaseController
 
         $categories = ['Food', 'Transport', 'Health', 'Fun'];
 
-        return $this->render($response, 'expenses/edit.twig', ['expense' => $expense, 'categories' => $categories]);
+        return $this->view->render($response, 'expenses/edit.twig', [
+            'expense' => $expense,
+            'categories' => $categories,
+        ]);  
     }
 
     public function update(Request $request, Response $response, array $routeParams): Response
@@ -146,7 +149,7 @@ class ExpenseController extends BaseController
         } catch (\Throwable $e) {
             $categories = ['Food', 'Transport', 'Health', 'Fun'];
 
-            return $this->render($response, 'expenses/edit.twig', [
+            return $this->view->render($response, 'expenses/edit.twig', [
                 'error' => $e->getMessage(),
                 'expense' => $expense,
                 'categories' => $categories, 

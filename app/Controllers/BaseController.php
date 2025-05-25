@@ -11,7 +11,13 @@ abstract class BaseController
 {
     public function __construct(
         protected Twig $view,
-    ) {}
+    ) {
+        $currentUserId = $_SESSION['user_id'] ?? null;
+        $currentUsername = $_SESSION['username'] ?? null;
+
+        $this->view->getEnvironment()->addGlobal('currentUserId', $currentUserId);
+        $this->view->getEnvironment()->addGlobal('currentUsername', $currentUsername);
+    }
 
     protected function render(Response $response, string $template, array $data = []): Response
     {
