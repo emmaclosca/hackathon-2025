@@ -111,7 +111,7 @@ class AuthController extends BaseController
         try {
             $this->authService->attempt($username, $password); // Calling the attempt method to authenticate the user
 
-            return $response->withHeader('Location', '/register')->withStatus(302); // LOCATION AFTER LOGIN !!!!!!!
+            return $response->withHeader('Location', '/expenses')->withStatus(302); // LOCATION AFTER LOGIN !!!!!!!
 
         // When an error is thrown, this catches it and re-renders the page 
         } catch (\RuntimeException $ex) {

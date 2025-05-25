@@ -19,7 +19,15 @@ class ExpenseService
     public function list(User $user, int $year, int $month, int $pageNumber, int $pageSize): array
     {
         // TODO: implement this and call from controller to obtain paginated list of expenses
-        return [];
+        $offsetCalculation = ($pageNumber - 1) * $pageSize;
+
+        $criteria = [
+            'user_id' => $user->id,
+            'year' => $year,
+            'month' => $month,
+        ];
+
+        return $this->expenses->findBy($criteria,$offsetCalculation, $pageSize); // Returns a paginated list of expenses
     }
 
     public function create(
@@ -30,9 +38,20 @@ class ExpenseService
         string $category,
     ): void {
         // TODO: implement this to create a new expense entity, perform validation, and persist
+        if ($amount <= 0) {
+            throw new \InvalidArgumentException('The amount of the expense must be greater than 0.');
+        }
+
+        if (trim($description) === '') {
+            throw new \InvalidArgumentException('The description of the expense is required.');
+        }
+
+        if (trim($category) === '') {
+            throw new \InvalidArgumentException('The category of the expense is required.');
+        }
 
         // TODO: here is a code sample to start with
-        $expense = new Expense(null, $user->id, $date, $category, (int)$amount, $description);
+        $expense = new Expense(null, $user->id, $date, $category, $amount, $description);
         $this->expenses->save($expense);
     }
 
@@ -44,6 +63,24 @@ class ExpenseService
         string $category,
     ): void {
         // TODO: implement this to update expense entity, perform validation, and persist
+        if ($amount <= 0) {
+            throw new \InvalidArgumentException('The amount of the expense must be greater than 0.');
+        }
+
+        if (trim($description) === '') {
+            throw new \InvalidArgumentException('The description of the expense is required.');
+        }
+
+        if (trim($category) === '') {
+            throw new \InvalidArgumentException('The category of the expense is required.');
+        }
+
+        $expense->setAmount($amount);
+        $expense->setDescription($description);
+        $expense->setDate($date);
+        $expense->setCategory($category);
+
+        $this->expenses->save($expense);
     }
 
     public function importFromCsv(User $user, UploadedFileInterface $csvFile): int

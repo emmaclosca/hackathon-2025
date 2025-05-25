@@ -44,6 +44,8 @@ class AuthService
         // TODO: implement this for authenticating the user
         // TODO: make sur ethe user exists and the password matches
         // TODO: don't forget to store in session user data needed afterwards
+        error_log("Attempting login for user: $username");
+
         $user = $this->users->findByUsername($username);
 
         if ($user === null) {
