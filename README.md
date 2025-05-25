@@ -104,10 +104,69 @@ A solution with passing analysis and unit tests will receive extra points.
 ## Delivery details
 
 Participant:
-- Full name: ...
-- Email address: ...
+- Full name: Emma Closca
+- Email address: emmaclosca@gmail.com
 
 Features fully implemented:
-- ...
 
-Other instructions about setting up the application (if any): ...
+- User Authentication (Register)
+    Displays a register user page (GET).
+    Registers a new user within the application (POST). 
+    Mandatory fields for creating new users are: username, password.
+    Validation rules: username (≥ 4 chars), password (≥ 8 chars, 1 number).
+    On success: redirect to /login page.
+    On failure: render /register page and show corresponding error messages.
+
+- User Authentication (Login/Logout)
+    Displays a login page (GET).
+    Logs in a user, starting a new user session (POST).
+    On success: set the logged in user in the session, then redirect to Dashboard page.
+    On failure: render Login page and show corresponding error message.
+    Logs out a user:
+      the session is destroyed
+      redirects to /login.
+  
+- CRUD (LIST)
+  List monthly expenses for the logged in user, sorted and paginated. 
+  The default year-month for the listing is the current one. Regarding the previous years, they are shown in the select input only if the user had expenses during that year.
+  Current year is always an option. The user is allowed to select a new year-month and press a button to reload the expenses list.
+  Expenses are sorted descending by date.
+  Clicking on the “Add” button at the top navigates to the Expenses – Add route.
+  Columns: description, amount (formatted € with 2 decimals), category, “Edit” link, “Delete” link.
+  Clicking on the “Edit” link navigates to Expenses – Edit route.
+  Clicking on the “Delete” link navigates to Expenses – Delete route.
+  
+- CRUD (ADD)
+  Renders a form for filling in the details of a new expense:
+    Date: a date type input, default today.
+    Category: a select with category names as options.
+    Amount: a numeric input for introducing the amount as a float.
+    Description: textarea
+  Validation rules (backend side):
+    Date ≤ today
+    Category selected
+    Amount > 0
+    Description not empty
+  Form action is: /expenses (POST)
+  On success: redirect back to Expenses – List.
+  On failure: redirect back to Expenses – Add, with prefilled previous values.
+
+- CRUD (EDIT)
+  Renders a pre-filled edit form for a given expense entity, identified by ID in the route.
+  Form action is: /expenses/{id} (POST)
+  Same validation & redirect logic as Expenses – Add.
+  
+- CRUD (DELETE)
+  Must hard-delete the expense provided by ID.
+  On success: redirect back to Expenses – List.
+  On failure: redirect back to Expenses – List.
+  
+- EXTRA
+  use prepared statements always when querying the DB.
+  ensure a user may change/delete only his/her own expenses.
+  Ensure that running composer analyze in project root outputs success message from PHPMD and PHPStan
+  using the proper password hashing function in PHP.
+  implement a “password again” input for ensuring no password typos.
+  using the proper password verify function in PHP.
+
+- Other instructions about setting up the application (if any): ...
