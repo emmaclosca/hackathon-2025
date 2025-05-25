@@ -135,8 +135,8 @@ Features fully implemented:
   Columns: description, amount (formatted € with 2 decimals), category, “Edit” link, “Delete” link.
   Clicking on the “Edit” link navigates to Expenses – Edit route.
   Clicking on the “Delete” link navigates to Expenses – Delete route.
-
-  - CRUD (ADD)
+  
+- CRUD (ADD)
   Renders a form for filling in the details of a new expense:
     Date: a date type input, default today.
     Category: a select with category names as options.
