@@ -22,7 +22,6 @@ class AuthController extends BaseController
 
     public function showRegister(Request $request, Response $response): Response
     {
-        // TODO: you also have a logger service that you can inject and use anywhere; file is var/app.log
         $this->logger->info('Register page requested');
 
         return $this->render($response, 'auth/register.twig');
@@ -30,17 +29,13 @@ class AuthController extends BaseController
 
     public function register(Request $request, Response $response): Response
     {
-        // TODO: call corresponding service to perform user registration
-        // Taking the input from the user and storing it into an array so we can access it
         $inputData = (array)$request->getParsedBody();
 
-        // Here we are providing a value thats default if field is missing with ?? "",
-        // While fetching the information 
         $username = trim($inputData['username'] ?? ''); 
         $password = $inputData['password'] ?? '';
         $confirmPassword = $inputData['confirmPassword'] ?? '';
 
-        $errors = []; // This array is set up to collect errors
+        $errors = []; 
 
         if ($username === '') {
             $errors['username'] = 'You must input a username.';
@@ -55,7 +50,6 @@ class AuthController extends BaseController
             $errors['confirmPassword'] = 'The passwords you inputted do not match.';
         }
 
-        // This if statement saves the username to avoid the user typing it again and re-renders to show the errors
         if (!empty($errors)) {
             return $this->render($response, 'auth/register.twig', [
                 'errors' => $errors,
@@ -64,11 +58,10 @@ class AuthController extends BaseController
         }
 
         try {
-            $this->authService->register($username, $password); // Calling the register method to validate the requirements and save the user
+            $this->authService->register($username, $password); 
 
             return $response->withHeader('Location', '/login')->withStatus(302);
 
-        // When an error is thrown, this catches it and re-renders the page 
         } catch (\RuntimeException $ex) {
             $errors['message'] = $ex->getMessage();
 
@@ -86,13 +79,12 @@ class AuthController extends BaseController
 
     public function login(Request $request, Response $response): Response
     {
-        // TODO: call corresponding service to perform user login, handle login failures
             $inputData = (array)$request->getParsedBody();
 
             $username = trim($inputData['username'] ?? ''); 
             $password = $inputData['password'] ?? '';
 
-            $errors = []; // This array is set up to collect errors
+            $errors = []; 
 
             if ($username === '') {
                 $errors['username'] = 'You must input a username.';
@@ -109,11 +101,10 @@ class AuthController extends BaseController
         }
 
         try {
-            $this->authService->attempt($username, $password); // Calling the attempt method to authenticate the user
+            $this->authService->attempt($username, $password); 
 
-            return $response->withHeader('Location', '/expenses')->withStatus(302); // LOCATION AFTER LOGIN !!!!!!!
+            return $response->withHeader('Location', '/expenses')->withStatus(302); 
 
-        // When an error is thrown, this catches it and re-renders the page 
         } catch (\RuntimeException $ex) {
             $errors['message'] = $ex->getMessage();
 
@@ -126,7 +117,6 @@ class AuthController extends BaseController
 
     public function logout(Request $request, Response $response): Response
     {
-        // TODO: handle logout by clearing session data and destroying session
         if (session_status() === PHP_SESSION_ACTIVE) {
             session_start();
         }

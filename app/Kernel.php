@@ -28,16 +28,13 @@ class Kernel
 {
     public static function createApp(): App
     {
-        // Load environment variables from your .env file
         $dotenv = Dotenv::createImmutable(__DIR__ . '/../');
         $dotenv->load();
 
-        // Configure the DI container builder and build the DI container
         $builder = new ContainerBuilder();
-        $builder->useAutowiring(true);  // Enable autowiring explicitly
+        $builder->useAutowiring(true);  
 
         $builder->addDefinitions([
-            // Define a factory for the Monolog logger with a stream handler that writes to var/app.log
             LoggerInterface::class            => function () {
                 $logger = new Logger('app');
                 $logger->pushHandler(new StreamHandler(__DIR__.'/../var/app.log', Level::Debug));
@@ -45,12 +42,10 @@ class Kernel
                 return $logger;
             },
 
-            // Define a factory for Twig view renderer
             Twig::class                       => function () {
                 return Twig::create(__DIR__.'/../templates', ['cache' => false]);
             },
 
-            // Define a factory for PDO database connection
            PDO::class => factory(function () {
                 static $pdo = null;
                 if ($pdo === null) {
@@ -65,23 +60,17 @@ class Kernel
                 return $pdo;
             }),
 
-            // Map interfaces to concrete implementations
             UserRepositoryInterface::class    => autowire(PdoUserRepository::class),
             ExpenseRepositoryInterface::class => autowire(PdoExpenseRepository::class),
         ]);
         $container = $builder->build();
 
-        // Create an application instance and configure
         AppFactory::setContainer($container);
         $app = AppFactory::create();
         $app->add(TwigMiddleware::createFromContainer($app, Twig::class));
         (require __DIR__.'/../config/settings.php')($app);
         (require __DIR__.'/../config/routes.php')($app);
 
-        // TODO: Handle session initialization
-
-        // Make current user ID globally available to twig templates
-        // TODO: change the following line to set the user ID stored in the session, for when user is logged
         $loggedInUserId = null;
         $twig = $container->get(Twig::class);
         $twig->getEnvironment()->addGlobal('currentUserId', $loggedInUserId);

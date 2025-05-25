@@ -25,8 +25,7 @@ class ExpenseController extends BaseController
 
     public function index(Request $request, Response $response): Response
     {
-        // parse request parameters
-        $userId = $_SESSION['user_id']; // TODO: obtain logged-in user ID from session
+        $userId = $_SESSION['user_id']; 
         $user = $this->userRepository->find($userId);
         $query = $request->getQueryParams();
 
@@ -58,17 +57,13 @@ class ExpenseController extends BaseController
 
     public function create(Request $request, Response $response): Response
     {
-        // TODO: implement this action method to display the create expense page
         $categories = ['Food', 'Transport', 'Health', 'Fun'];
-        // Hints:
-        // - obtain the list of available categories from configuration and pass to the view
 
         return $this->render($response, 'expenses/create.twig', ['categories' => $categories]);
     }
 
     public function store(Request $request, Response $response): Response
     {
-        // TODO: implement this action method to create a new expense
         $userId = $_SESSION['user_id']; 
         $user = $this->userRepository->find($userId);
 
@@ -105,7 +100,7 @@ class ExpenseController extends BaseController
         $user = $this->userRepository->find($userId);
 
         if (!$user) {
-            return $response->withStatus(403); // If the user is not logged in
+            return $response->withStatus(403); 
         }
         $expenseId = (int)($routeParams['id'] ?? 0);
         $expense = $this->expenseService->find($expenseId);
@@ -160,7 +155,6 @@ class ExpenseController extends BaseController
 
     public function destroy(Request $request, Response $response, array $routeParams): Response
     {
-
         $userId = $_SESSION['user_id'];
 
         $expenseId = (int) $routeParams['id'];

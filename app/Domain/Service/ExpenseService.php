@@ -18,7 +18,6 @@ class ExpenseService
 
     public function list(User $user, int $year, int $month, int $pageNumber, int $pageSize): array
     {
-        // TODO: implement this and call from controller to obtain paginated list of expenses
         $offsetCalculation = ($pageNumber - 1) * $pageSize;
 
         $criteria = [
@@ -27,7 +26,7 @@ class ExpenseService
             'month' => $month,
         ];
 
-        return $this->expenses->findBy($criteria,$offsetCalculation, $pageSize); // Returns a paginated list of expenses
+        return $this->expenses->findBy($criteria,$offsetCalculation, $pageSize); 
     }
 
     public function count(array $criteria): int
@@ -42,7 +41,6 @@ class ExpenseService
         DateTimeImmutable $date,
         string $category,
     ): void {
-        // TODO: implement this to create a new expense entity, perform validation, and persist
         if ($amount <= 0) {
             throw new \InvalidArgumentException('The amount of the expense must be greater than 0.');
         }
@@ -57,7 +55,6 @@ class ExpenseService
 
         $amountCents = (int) round($amount * 100);
 
-        // TODO: here is a code sample to start with
         $expense = new Expense(null, $user->id, $date, $category, $amountCents, $description);
         $this->expenses->save($expense);
     }
@@ -69,7 +66,6 @@ class ExpenseService
         DateTimeImmutable $date,
         string $category,
     ): void {
-        // TODO: implement this to update expense entity, perform validation, and persist
         if ($amount <= 0) {
             throw new \InvalidArgumentException('The amount of the expense must be greater than 0.');
         }
@@ -82,7 +78,7 @@ class ExpenseService
             throw new \InvalidArgumentException('The category of the expense is required.');
         }
 
-        $expense->amountCents = (int) round($amount * 100);
+        $expense->setAmountCents((int) round($amount * 100));
         $expense->setDescription($description);
         $expense->setDate($date);
         $expense->setCategory($category);
@@ -100,7 +96,6 @@ class ExpenseService
 
     public function getAvailableYears(User $user): array
     {
-        // Delegate to repository to fetch distinct years for this user's expenses
         return $this->expenses->findDistinctYearsByUserId($user->id);
     }
 

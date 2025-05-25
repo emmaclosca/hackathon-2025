@@ -22,7 +22,7 @@ final class Expense
         $this->description = $description;
     }
 
-    public function setDate(string $date): void
+    public function setDate(DateTimeImmutable $date): void
     {
         $this->date = $date;
     }
@@ -32,7 +32,7 @@ final class Expense
         $this->category = $category;
     }
 
-    public function setAmountCents(string $amountcents): void
+    public function setAmountCents(int $amountCents): void
     {
         $this->amountCents = $amountCents;
     }
