@@ -127,46 +127,46 @@ Features fully implemented:
       redirects to /login.
   
 - CRUD (LIST)
-  List monthly expenses for the logged in user, sorted and paginated. 
-  The default year-month for the listing is the current one. Regarding the previous years, they are shown in the select input only if the user had expenses during that year.
-  Current year is always an option. The user is allowed to select a new year-month and press a button to reload the expenses list.
-  Expenses are sorted descending by date.
-  Clicking on the “Add” button at the top navigates to the Expenses – Add route.
-  Columns: description, amount (formatted € with 2 decimals), category, “Edit” link, “Delete” link.
-  Clicking on the “Edit” link navigates to Expenses – Edit route.
-  Clicking on the “Delete” link navigates to Expenses – Delete route.
+    List monthly expenses for the logged in user, sorted and paginated. 
+    The default year-month for the listing is the current one. Regarding the previous years, they are shown in the select input only if the user had expenses during that year.
+    Current year is always an option. The user is allowed to select a new year-month and press a button to reload the expenses list.
+    Expenses are sorted descending by date.
+    Clicking on the “Add” button at the top navigates to the Expenses – Add route.
+    Columns: description, amount (formatted € with 2 decimals), category, “Edit” link, “Delete” link.
+    Clicking on the “Edit” link navigates to Expenses – Edit route.
+    Clicking on the “Delete” link navigates to Expenses – Delete route.
   
 - CRUD (ADD)
-  Renders a form for filling in the details of a new expense:
-    Date: a date type input, default today.
-    Category: a select with category names as options.
-    Amount: a numeric input for introducing the amount as a float.
-    Description: textarea
-  Validation rules (backend side):
-    Date ≤ today
-    Category selected
-    Amount > 0
-    Description not empty
-  Form action is: /expenses (POST)
-  On success: redirect back to Expenses – List.
-  On failure: redirect back to Expenses – Add, with prefilled previous values.
+    Renders a form for filling in the details of a new expense:
+      Date: a date type input, default today.
+      Category: a select with category names as options.
+      Amount: a numeric input for introducing the amount as a float.
+      Description: textarea
+    Validation rules (backend side):
+      Date ≤ today
+      Category selected
+      Amount > 0
+      Description not empty
+    Form action is: /expenses (POST)
+    On success: redirect back to Expenses – List.
+    On failure: redirect back to Expenses – Add, with prefilled previous values.
 
 - CRUD (EDIT)
-  Renders a pre-filled edit form for a given expense entity, identified by ID in the route.
-  Form action is: /expenses/{id} (POST)
-  Same validation & redirect logic as Expenses – Add.
+    Renders a pre-filled edit form for a given expense entity, identified by ID in the route.
+    Form action is: /expenses/{id} (POST)
+    Same validation & redirect logic as Expenses – Add.
   
 - CRUD (DELETE)
-  Must hard-delete the expense provided by ID.
-  On success: redirect back to Expenses – List.
-  On failure: redirect back to Expenses – List.
+    Must hard-delete the expense provided by ID.
+    On success: redirect back to Expenses – List.
+    On failure: redirect back to Expenses – List.
   
 - EXTRA
-  use prepared statements always when querying the DB.
-  ensure a user may change/delete only his/her own expenses.
-  Ensure that running composer analyze in project root outputs success message from PHPMD and PHPStan
-  using the proper password hashing function in PHP.
-  implement a “password again” input for ensuring no password typos.
-  using the proper password verify function in PHP.
+    use prepared statements always when querying the DB.
+    ensure a user may change/delete only his/her own expenses.
+    Ensure that running composer analyze in project root outputs success message from PHPMD and PHPStan
+    using the proper password hashing function in PHP.
+    implement a “password again” input for ensuring no password typos.
+    using the proper password verify function in PHP.
 
 - Other instructions about setting up the application (if any): ...

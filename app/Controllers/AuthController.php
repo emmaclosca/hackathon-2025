@@ -94,7 +94,7 @@ class AuthController extends BaseController
             }
 
             if (!empty($errors)) {
-            return $this->render($response, 'auth/login.twig', [
+            return $this->render($response, 'auth/.twig', [
                 'errors' => $errors,
                 'existingInput' => ['username' => $username]
             ]);
